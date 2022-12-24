@@ -2,21 +2,21 @@
 import throttle from 'lodash.throttle';
 
 const FEEDBACKKEY = 'feedback-form-state';
-const feedbackFormState = {
-  clear() {
-    keys = Object.keys(this);
-    keys.forEach(key => {
-      // clear all values from object, eccept this function
-      if (key !== 'clear') {
-        delete this[key];
-      }
-    });
-  },
+let feedbackFormState = {
+  // clear() {
+  //   keys = Object.keys(this);
+  //   keys.forEach(key => {
+  //     // clear all values from object, eccept this function
+  //     if (key !== 'clear') {
+  //       delete this[key];
+  //     }
+  //   });
+  // },
 };
 
 const refs = document.querySelector('.js-feedback-form');
 
-refs.addEventListener('submit', throttle(onFormSubmit, 500));
+refs.addEventListener('submit', onFormSubmit);
 refs.addEventListener('input', throttle(onFormInput, 500));
 
 populateContent();
@@ -24,15 +24,10 @@ populateContent();
 function onFormSubmit(evt) {
   evt.preventDefault();
 
-  console.log(
-    'email: ',
-    evt.currentTarget.email.value,
-    '; message: ',
-    evt.currentTarget.message.value
-  );
+  console.log(feedbackFormState);
   evt.currentTarget.reset();
   localStorage.removeItem(FEEDBACKKEY);
-  feedbackFormState.clear();
+  feedbackFormState = {};
 }
 
 function onFormInput(evt) {
